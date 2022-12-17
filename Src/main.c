@@ -1,16 +1,34 @@
 /**
  ******************************************************************************
  * @file           : main.c
- * @author         : J. Prokopczuk
+ * @author         : TODO: Add credits
  * @brief          : Main program body
  ******************************************************************************
  */
 
-#include <stdint.h>
-#include <stm32f4xx_hal_gpio.h>
+#include <stm32f4xx_hal.h>
+#include <stm32f4xx_hal_conf.h>
+#include "leds/leds.h"
+
+// static UART_HandleTypeDef huart3;
+void SysTick_Handler(void)
+{
+	HAL_IncTick();
+}
 
 int main(void)
 {
+	HAL_Init();
+
+	Leds_init();
+	Leds_welcomeFLash();
+
     /* Loop forever */
-	for(;;);
+	while(1)
+	{
+		Leds_toggleLed(LED4);
+		HAL_Delay(1000);
+		Leds_toggleLed(LED4);
+		HAL_Delay(1000);
+	}
 }
