@@ -6,16 +6,16 @@
  ******************************************************************************
  */
 
-#include <stm32h4xx_hal_rcc.h>
-#include <stm32h4xx_hal_gpio.h>
-#include <stm32h4xx_hal.h> // Simple HAL delay
+#include <stm32f4xx_hal_rcc.h>
+#include <stm32f4xx_hal_gpio.h>
+#include <stm32f4xx_hal.h> // Simple HAL delay
 
 #include "leds.h"
 
 void Leds_init(void)
 {
 	GPIO_InitTypeDef gpio;
-	__HAL_RCC_GPIOG_CLK_ENABLE();
+	__HAL_RCC_GPIOB_CLK_ENABLE();
 	gpio.Pin = GPIO_PIN_7 | GPIO_PIN_8 | GPIO_PIN_9 | GPIO_PIN_10;
 	gpio.Mode = GPIO_MODE_OUTPUT_PP;
 	gpio.Pull = GPIO_PULLDOWN;
@@ -26,16 +26,16 @@ void Leds_init(void)
 void Leds_turnOnLed(Leds_ID ledId){
 	switch(ledId){
 	case LED1:
-		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_2, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOB, LED_1, GPIO_PIN_SET);
 		break;
 	case LED2:
-		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_3, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOB, LED_2, GPIO_PIN_SET);
 		break;
 	case LED3:
-		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_4, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOB, LED_3, GPIO_PIN_SET);
 		break;
 	case LED4:
-		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_5, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOB, LED_4, GPIO_PIN_SET);
 		break;
 	}
 }
@@ -43,16 +43,16 @@ void Leds_turnOnLed(Leds_ID ledId){
 void Leds_turnOffLed(Leds_ID ledId){
 	switch(ledId){
 	case LED1:
-		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_2, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(LEDS_PORT, LED_1, GPIO_PIN_RESET);
 		break;
 	case LED2:
-		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_3, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(LEDS_PORT, LED_2, GPIO_PIN_RESET);
 		break;
 	case LED3:
-		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_4, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(LEDS_PORT, LED_3, GPIO_PIN_RESET);
 		break;
 	case LED4:
-		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_5, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(LEDS_PORT, LED_4, GPIO_PIN_RESET);
 		break;
 	}
 }
@@ -60,16 +60,16 @@ void Leds_turnOffLed(Leds_ID ledId){
 void Leds_toggleLed(Leds_ID ledId){
 	switch(ledId){
 	case LED1:
-		HAL_GPIO_TogglePin(GPIOG, GPIO_PIN_2);
+		HAL_GPIO_TogglePin(LEDS_PORT, LED_1);
 		break;
 	case LED2:
-		HAL_GPIO_TogglePin(GPIOG, GPIO_PIN_3);
+		HAL_GPIO_TogglePin(LEDS_PORT, LED_2);
 		break;
 	case LED3:
-		HAL_GPIO_TogglePin(GPIOG, GPIO_PIN_4);
+		HAL_GPIO_TogglePin(LEDS_PORT, LED_3);
 		break;
 	case LED4:
-		HAL_GPIO_TogglePin(GPIOG, GPIO_PIN_5);
+		HAL_GPIO_TogglePin(LEDS_PORT, LED_4);
 		break;
 	}
 }

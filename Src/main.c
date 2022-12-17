@@ -7,7 +7,7 @@
  */
 
 #include <stm32f4xx_hal.h>
-#include <stm32h4xx_hal_conf.h>
+#include <stm32f4xx_hal_conf.h>
 #include "leds/leds.h"
 
 // static UART_HandleTypeDef huart3;
@@ -26,9 +26,9 @@ int main(void)
     /* Loop forever */
 	while(1)
 	{
-		Leds_toggleLed(LED5);
+		Leds_toggleLed(LED4);
 		HAL_Delay(1000);
-		Leds_toggleLed(LED5);
+		Leds_toggleLed(LED4);
 		HAL_Delay(1000);
 	}
 }
