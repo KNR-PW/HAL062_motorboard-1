@@ -9,7 +9,7 @@
 #include <stm32f4xx_hal.h>
 #include <stm32f4xx_hal_conf.h>
 #include <stm32f4xx_hal_rcc.h>
-// #include "leds/leds.h"
+#include "leds/leds.h"
 
 
 void SystemClock_Config(void);
