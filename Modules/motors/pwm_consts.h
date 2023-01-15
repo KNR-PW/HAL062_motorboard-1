@@ -1,6 +1,9 @@
 /*
- * @file pwm_consts.h
- * @brief Provides constants to pwm control
+ ******************************************************************************
+ * @file           : pwm_consts.h
+ * @author         : D. Mucha
+ * @brief          : Provides constants to pwm control
+ ******************************************************************************
  */
 
 #ifndef MODULES_MOTORS_PWM_CONSTS_H

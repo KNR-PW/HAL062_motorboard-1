@@ -1,6 +1,9 @@
 /*
- * @file motor_interface.h
- * @brief Provides high level motors control
+ ******************************************************************************
+ * @file           : motor_interface.h
+ * @author         : D. Mucha
+ * @brief          : Provides high level motors control
+ ******************************************************************************
  */
 
 #ifndef MODULES_MOTORS_MOTOR_INTERFACE_H

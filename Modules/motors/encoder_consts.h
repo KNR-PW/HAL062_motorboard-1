@@ -1,6 +1,9 @@
 /*
- * @file encoder_consts.h
- * @brief Provides constants to encoder control
+ ******************************************************************************
+ * @file           : encoder_consts.h
+ * @author         : D. Mucha
+ * @brief          : Provides constants to encoder control
+ ******************************************************************************
  */
 
 #ifndef MODULES_MOTORS_ENCODER_CONSTS_H

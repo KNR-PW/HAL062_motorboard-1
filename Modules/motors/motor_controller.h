@@ -1,6 +1,9 @@
 /*
- * @file motor_controller.h
- * @brief Provides high level motors control
+ ******************************************************************************
+ * @file           : motor_controller.h
+ * @author         : D. Mucha
+ * @brief          : Provides high level motors control
+ ******************************************************************************
  */
 
 #ifndef MODULES_MOTORS_MOTOR_CONTROLLER_H

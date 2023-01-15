@@ -1,6 +1,9 @@
 /*
- * @file consts.h
- * @brief Provides constants to motors control
+ ******************************************************************************
+ * @file           : control_consts.h
+ * @author         : D. Mucha
+ * @brief          : Provides constants to general control (regulators, filters)
+ ******************************************************************************
  */
 
 #ifndef MODULES_MOTORS_CONSTS_H

@@ -1,7 +1,11 @@
 /*
- * @file timers.h
- * @brief Timers configuration
+ ******************************************************************************
+ * @file           : timers.h
+ * @author         : D. Mucha
+ * @brief          : Timers configuration
+ ******************************************************************************
  */
+
 #ifndef MOTORS_TIMERS_H_
 #define MOTORS_TIMERS_H_
 #include "stdint.h"
