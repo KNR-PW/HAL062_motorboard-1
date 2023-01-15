@@ -6,7 +6,7 @@
  ******************************************************************************
  */
 #include "motor_controller.h"
-#include "consts.h"
+#include "control_consts.h"
 
 int16_t PIDSpeedController(float referenceSpeed, float actualSpeed,
 		float currentRegOut) {
