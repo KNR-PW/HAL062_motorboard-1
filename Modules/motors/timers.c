@@ -6,6 +6,8 @@
  ******************************************************************************
  */
 
+#include <stm32f4xx_hal.h> // this include replaces including <stm32f4xx_hal_tim.h>,
+// including only <stm32f4xx_hal_tim.h> causes compilation errors
 #include "timers.h"
 #include "pwm_consts.h"
 
