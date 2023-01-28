@@ -48,10 +48,10 @@ void TIM2_IRQHandler(void);
 void TIM3_IRQHandler(void);
 
 // @brief Global variable for data from encoder1
-volatile int32_t g_encoder1Tick;
+//volatile int32_t g_encoder1Tick;
 // @brief Global variable for data from encoder2
-volatile int32_t g_encoder2Tick;
+//volatile int32_t g_encoder2Tick;
 // @brief Global variable for data from encoder3
-volatile int32_t g_encoder3Tick;
+//volatile int32_t g_encoder3Tick;
 
 #endif /* MOTORS_TIMERS_H_ */

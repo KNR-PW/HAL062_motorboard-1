@@ -7,7 +7,7 @@
  */
 
 #include <stm32f4xx_hal.h>
-#include "leds/leds.h"
+#include "motors/timers.h"
 
 // static UART_HandleTypeDef huart3;
 void SysTick_Handler(void) {
@@ -15,16 +15,10 @@ void SysTick_Handler(void) {
 }
 
 int main(void) {
-	HAL_Init();
-
-	Leds_init();
-	Leds_welcomeFLash();
+	InitTimers();
 
 	/* Loop forever */
 	while (1) {
-		Leds_toggleLed(LED4);
-		HAL_Delay(1000);
-		Leds_toggleLed(LED4);
-		HAL_Delay(1000);
+
 	}
 }
