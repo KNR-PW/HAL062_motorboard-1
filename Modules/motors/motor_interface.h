@@ -9,7 +9,7 @@
 #ifndef MODULES_MOTORS_MOTOR_INTERFACE_H
 #define MODULES_MOTORS_MOTOR_INTERFACE_H
 
-#include "stdbool.h"
+#include <stdbool.h>
 
 // @brief LEDs ID structure
 // names corresponds to following designations of rover's wheels:

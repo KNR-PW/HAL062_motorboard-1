@@ -8,7 +8,6 @@
 
 #include "timers.h"
 #include "pwm_consts.h"
-#include "stm32f4xx_hal_tim.h"
 
 void InitTimers() {
 	TIM1_Init();
@@ -18,6 +17,30 @@ void InitTimers() {
 }
 
 void TIM1_Init() {
+//	TIM_HandleTypeDef htim;
+//	TIM_Encoder_InitTypeDef sConfig;
+//
+//	htim1.Instance = TIM1;
+//	htim1.Init.Prescaler = 0;
+//	htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
+//	htim1.Init.Period = 65535;
+//	htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+//	htim1.Init.RepetitionCounter = 0;
+//	htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+//	sConfig.EncoderMode = TIM_ENCODERMODE_TI12;
+//	sConfig.IC1Polarity = TIM_ICPOLARITY_RISING;
+//	sConfig.IC1Selection = TIM_ICSELECTION_DIRECTTI;
+//	sConfig.IC1Prescaler = TIM_ICPSC_DIV1;
+//	sConfig.IC1Filter = 0;
+//	sConfig.IC2Polarity = TIM_ICPOLARITY_RISING;
+//	sConfig.IC2Selection = TIM_ICSELECTION_DIRECTTI;
+//	sConfig.IC2Prescaler = TIM_ICPSC_DIV1;
+//	sConfig.IC2Filter = 0;
+//
+//	HAL_TIM_Encoder_Init(&htim, &sConfig);
+//	// both TIM_CHANNEL_1 and TIM_CHANNEL_2 used
+//	HAL_TIM_Encoder_Start(&htim, TIM_CHANNEL_ALL);
+
 }
 
 void TIM2_Init() {

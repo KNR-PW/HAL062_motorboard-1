@@ -9,7 +9,7 @@
 #ifndef MODULES_MOTORS_ENCODER_CONSTS_H
 #define MODULES_MOTORS_ENCODER_CONSTS_H
 
-#include "stm32f4xx_hal_gpio.h"
+#include <stm32f4xx_hal_gpio.h>
 
 #define ENCODER1_PORT GPIOA
 #define ENCODER2_A_PORT GPIOA

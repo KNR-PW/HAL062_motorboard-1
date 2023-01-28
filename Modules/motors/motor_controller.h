@@ -9,7 +9,7 @@
 #ifndef MODULES_MOTORS_MOTOR_CONTROLLER_H
 #define MODULES_MOTORS_MOTOR_CONTROLLER_H
 
-#include "stdint.h"
+#include <stdint.h>
 
 // TODO: no idea why this is 1000
 #define PWM_MAX_DUTY 1000

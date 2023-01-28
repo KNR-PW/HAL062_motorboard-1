@@ -8,8 +8,8 @@
 
 #include "motor_interface.h"
 #include "motor_controller.h"
-#include "stddef.h"
-#include "stdint.h"
+#include <stddef.h>
+#include <stdint.h>
 
 // @brief structre Map allows to map sequence numbers in loops to pointers of specific variables
 struct Map {

@@ -12,7 +12,7 @@
 
 // [Timer - Encoder - Pin] mapping for our custom motor board
 // TIM1_CH1 - ENK1_A - PA8
-// TIM1_CH1 - ENK1_B - PA9
+// TIM1_CH2 - ENK1_B - PA9
 // TIM2_CH1 - ENK2_A - PA5
 // TIM2_CH2 - ENK2_B - PB3
 // TIM3_CH1 - ENK3_A - PA6
