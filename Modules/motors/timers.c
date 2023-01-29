@@ -10,6 +10,7 @@
 // including only <stm32f4xx_hal_tim.h> causes compilation errors
 #include "timers.h"
 #include "pwm_consts.h"
+#include "encoder_consts.h"
 
 TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim2;
@@ -35,7 +36,7 @@ void TIM1_Init() {
 	htim1.Instance = TIM1;
 	htim1.Init.Prescaler = 0;
 	htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim1.Init.Period = 65535;
+	htim1.Init.Period = ENC1_PULSCE_PER_ROTATION;
 	htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
 	htim1.Init.RepetitionCounter = 0;
 	htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
@@ -68,7 +69,7 @@ void TIM2_Init() {
 	htim2.Instance = TIM2;
 	htim2.Init.Prescaler = 0;
 	htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim2.Init.Period = 4294967295;
+	htim2.Init.Period = ENC2_PULSCE_PER_ROTATION;
 	htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
 	htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
 	sConfig.EncoderMode = TIM_ENCODERMODE_TI1;
@@ -98,7 +99,7 @@ void TIM3_Init() {
 	htim3.Instance = TIM3;
 	htim3.Init.Prescaler = 0;
 	htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim3.Init.Period = 65535;
+	htim3.Init.Period = ENC3_PULSCE_PER_ROTATION;
 	htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
 	htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
 	sConfig.EncoderMode = TIM_ENCODERMODE_TI1;
@@ -139,81 +140,6 @@ void TIM5_Init() {
 	}
 }
 
-
-void HAL_TIM_Encoder_MspInit(TIM_HandleTypeDef* htim_encoder)
-{
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
-  if(htim_encoder->Instance==TIM1)
-  {
-    /* Peripheral clock enable */
-    __HAL_RCC_TIM1_CLK_ENABLE();
-
-    __HAL_RCC_GPIOA_CLK_ENABLE();
-    /**TIM1 GPIO Configuration
-    PA8     ------> TIM1_CH1
-    PA9     ------> TIM1_CH2
-    */
-    GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9;
-    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    GPIO_InitStruct.Alternate = GPIO_AF1_TIM1;
-    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-  }
-  else if(htim_encoder->Instance==TIM2)
-    {
-      /* Peripheral clock enable */
-      __HAL_RCC_TIM2_CLK_ENABLE();
-
-      __HAL_RCC_GPIOA_CLK_ENABLE();
-      __HAL_RCC_GPIOB_CLK_ENABLE();
-      /**TIM2 GPIO Configuration
-      PA5     ------> TIM2_CH1
-      PB3     ------> TIM2_CH2
-      */
-      GPIO_InitStruct.Pin = GPIO_PIN_5;
-      GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-      GPIO_InitStruct.Pull = GPIO_NOPULL;
-      GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-      GPIO_InitStruct.Alternate = GPIO_AF1_TIM2;
-      HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-      GPIO_InitStruct.Pin = GPIO_PIN_3;
-      GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-      GPIO_InitStruct.Pull = GPIO_NOPULL;
-      GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-      GPIO_InitStruct.Alternate = GPIO_AF1_TIM2;
-      HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-    /* USER CODE BEGIN TIM2_MspInit 1 */
-
-    /* USER CODE END TIM2_MspInit 1 */
-    }
-
-  else if(htim_encoder->Instance==TIM3)
-  {
-    /* Peripheral clock enable */
-    __HAL_RCC_TIM3_CLK_ENABLE();
-
-    __HAL_RCC_GPIOA_CLK_ENABLE();
-    /**TIM3 GPIO Configuration
-    PA6     ------> TIM3_CH1
-    PA7     ------> TIM3_CH2
-    */
-    GPIO_InitStruct.Pin = GPIO_PIN_6|GPIO_PIN_7;
-    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    GPIO_InitStruct.Alternate = GPIO_AF2_TIM3;
-    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-  /* USER CODE BEGIN TIM3_MspInit 1 */
-
-  /* USER CODE END TIM3_MspInit 1 */
-  }
-
-}
-
 void TIM1_IRQHandler(void) {
 	// g_encoder1Tick = read_encoder_data JACEK HELP!!!
 }
@@ -223,5 +149,96 @@ void TIM2_IRQHandler(void) {
 }
 
 void TIM3_IRQHandler(void) {
-	// g_encoder3Tick=
+	 g_encoder3Tick
 }
+
+
+/* overwritten weak msp functions (gpio and clock config)*/
+
+void HAL_TIM_Encoder_MspInit(TIM_HandleTypeDef *htim_encoder) {
+	GPIO_InitTypeDef GPIO_InitStruct = { 0 };
+
+	if (htim_encoder->Instance == TIM1) {
+		/* Peripheral clock enable */
+		__HAL_RCC_TIM1_CLK_ENABLE();
+		__HAL_RCC_GPIOA_CLK_ENABLE();
+
+		/**TIM1 GPIO Configuration
+		 PA8     ------> TIM1_CH1
+		 PA9     ------> TIM1_CH2
+		 */
+		GPIO_InitStruct.Pin = GPIO_PIN_8 | GPIO_PIN_9;
+		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+		GPIO_InitStruct.Pull = GPIO_NOPULL;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+		GPIO_InitStruct.Alternate = GPIO_AF1_TIM1;
+		HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+	} else if (htim_encoder->Instance == TIM2) {
+		/* Peripheral clock enable */
+		__HAL_RCC_TIM2_CLK_ENABLE();
+		__HAL_RCC_GPIOA_CLK_ENABLE();
+		__HAL_RCC_GPIOB_CLK_ENABLE();
+
+		/**TIM2 GPIO Configuration
+		 PA5     ------> TIM2_CH1
+		 PB3     ------> TIM2_CH2
+		 */
+		GPIO_InitStruct.Pin = GPIO_PIN_5;
+		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+		GPIO_InitStruct.Pull = GPIO_NOPULL;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+		GPIO_InitStruct.Alternate = GPIO_AF1_TIM2;
+		HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+		GPIO_InitStruct.Pin = GPIO_PIN_3;
+		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+		GPIO_InitStruct.Pull = GPIO_NOPULL;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+		GPIO_InitStruct.Alternate = GPIO_AF1_TIM2;
+		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+	}
+
+	else if (htim_encoder->Instance == TIM3) {
+		/* Peripheral clock enable */
+		__HAL_RCC_TIM3_CLK_ENABLE();
+		__HAL_RCC_GPIOA_CLK_ENABLE();
+
+		/**TIM3 GPIO Configuration
+		 PA6     ------> TIM3_CH1
+		 PA7     ------> TIM3_CH2
+		 */
+		GPIO_InitStruct.Pin = GPIO_PIN_6 | GPIO_PIN_7;
+		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+		GPIO_InitStruct.Pull = GPIO_NOPULL;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+		GPIO_InitStruct.Alternate = GPIO_AF2_TIM3;
+		HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+	}
+
+}
+
+void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *htim_pwm) {
+	if (htim_pwm->Instance == TIM5) {
+		/* Peripheral clock enable */
+		__HAL_RCC_TIM5_CLK_ENABLE();
+	}
+}
+
+void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim) {
+	GPIO_InitTypeDef GPIO_InitStruct = { 0 };
+	if (htim->Instance == TIM5) {
+		__HAL_RCC_GPIOA_CLK_ENABLE();
+		/**TIM5 GPIO Configuration
+		 PA0-WKUP     ------> TIM5_CH1
+		 PA1     ------> TIM5_CH2
+		 PA2     ------> TIM5_CH3
+		 */
+		GPIO_InitStruct.Pin = GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2;
+		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+		GPIO_InitStruct.Pull = GPIO_NOPULL;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+		GPIO_InitStruct.Alternate = GPIO_AF2_TIM5;
+		HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+	}
+}
+

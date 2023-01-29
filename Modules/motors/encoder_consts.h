@@ -22,4 +22,9 @@
 #define ENCODER3_A_PIN GPIO_PIN_6
 #define ENCODER3_B_PIN GPIO_PIN_7
 
+/* contains information of numbers of pulse per whole rotation*/
+#define ENC1_PULSCE_PER_ROTATION 29
+#define ENC2_PULSCE_PER_ROTATION 29
+#define ENC3_PULSCE_PER_ROTATION 29
+
 #endif /* MODULES_MOTORS_ENCODER_CONSTS_H */
