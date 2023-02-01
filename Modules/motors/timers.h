@@ -22,6 +22,12 @@
 // TIM5_CH2 - PWM2 - PA1
 // TIM5_CH3 - PWM3 - PA2
 
+extern TIM_HandleTypeDef htim1; //encoder 1 - TIM1
+extern TIM_HandleTypeDef htim2; // encoder 2 - TIM2
+extern TIM_HandleTypeDef htim3; // encoder 3 - TIM3
+extern TIM_HandleTypeDef htim5; // PWM 1,2,3 - TIM5
+extern TIM_HandleTypeDef htim7; // measuring speed - TIM14
+
 // @brief Initialize all timers
 void InitTimers();
 
@@ -39,24 +45,5 @@ void TIM5_Init();
 
 // @brief Initialize timer for measuring speed
 void TIM7_Init(void);
-
-// @brief Readings encoder data
-void TIM7_IRQHandler(void);
-
-typedef enum {
-	CHANNEL1 = TIM_CHANNEL_1, // PWM1
-	CHANNEL2 = TIM_CHANNEL_2, // PWM2
-	CHANNEL3 = TIM_CHANNEL_3, // PWM3
-} ChannelType;
-
-// @brief required motor calibration before first usage
-// @param channel enum type number of channel to precise motor
-void motor_calibration(ChannelType channel);
-
-// @brief Setting duty of motors PWM
-// @param channel enum type number of channel to precise motor
-// @param duty duty chosen from 500 to 1000
-// @returns predefined enum status type from HAL library
-HAL_StatusTypeDef PWM_SetDutyCycle(ChannelType channel, uint16_t duty);
 
 #endif /* MOTORS_TIMERS_H_ */
