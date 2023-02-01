@@ -11,21 +11,28 @@
 #include "timers.h"
 #include "pwm_consts.h"
 #include "encoder_consts.h"
+#include "tim_handlers.h"
 
-TIM_HandleTypeDef htim1;
-TIM_HandleTypeDef htim2;
-TIM_HandleTypeDef htim3;
-TIM_HandleTypeDef htim5;
+TIM_HandleTypeDef htim1; //encoder 1 - TIM1
+TIM_HandleTypeDef htim2; // encoder 2 - TIM2
+TIM_HandleTypeDef htim3; // encoder 3 - TIM3
+TIM_HandleTypeDef htim5; // PWM 1,2,3 - TIM5
+TIM_HandleTypeDef htim7; // measuring speed - TIM14
+
+uint16_t enc1PulseNumber;
+uint16_t enc2PulseNumber;
+uint16_t enc3PulseNumber;
+
+uint16_t motor1Velocity;
+uint16_t motor2Velocity;
+uint16_t motor3Velocity;
 
 void InitTimers() {
 	TIM1_Init();
 	TIM2_Init();
 	TIM3_Init();
 	TIM5_Init();
-	HAL_TIM_Encoder_Start(&htim1, TIM_CHANNEL_ALL);
-	HAL_TIM_Encoder_Start(&htim2, TIM_CHANNEL_ALL);
-	HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL);
-	HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_1);
+	TIM7_Init();
 }
 
 void TIM1_Init() {
@@ -36,7 +43,7 @@ void TIM1_Init() {
 	htim1.Instance = TIM1;
 	htim1.Init.Prescaler = 0;
 	htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim1.Init.Period = ENC1_PULSCE_PER_ROTATION;
+	htim1.Init.Period = ENC1_PULSE_PER_ROTATION;
 	htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
 	htim1.Init.RepetitionCounter = 0;
 	htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
@@ -59,6 +66,10 @@ void TIM1_Init() {
 			!= HAL_OK) {
 		//TODO: error handling needed
 	}
+	if (HAL_TIM_Encoder_Start(&htim1, TIM_CHANNEL_ALL)
+				!= HAL_OK) {
+			// TODO: error handling needed
+		}
 
 }
 
@@ -69,7 +80,7 @@ void TIM2_Init() {
 	htim2.Instance = TIM2;
 	htim2.Init.Prescaler = 0;
 	htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim2.Init.Period = ENC2_PULSCE_PER_ROTATION;
+	htim2.Init.Period = ENC2_PULSE_PER_ROTATION;
 	htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
 	htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
 	sConfig.EncoderMode = TIM_ENCODERMODE_TI1;
@@ -90,6 +101,10 @@ void TIM2_Init() {
 			!= HAL_OK) {
 		//TODO: error handling needed
 	}
+	if (HAL_TIM_Encoder_Start(&htim2, TIM_CHANNEL_ALL)
+				!= HAL_OK) {
+			// TODO: error handling needed
+		}
 }
 
 void TIM3_Init() {
@@ -99,7 +114,7 @@ void TIM3_Init() {
 	htim3.Instance = TIM3;
 	htim3.Init.Prescaler = 0;
 	htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim3.Init.Period = ENC3_PULSCE_PER_ROTATION;
+	htim3.Init.Period = ENC3_PULSE_PER_ROTATION;
 	htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
 	htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
 	sConfig.EncoderMode = TIM_ENCODERMODE_TI1;
@@ -120,6 +135,10 @@ void TIM3_Init() {
 			!= HAL_OK) {
 		//TODO: error handling needed
 	}
+	if (HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL)
+				!= HAL_OK) {
+			// TODO: error handling needed
+		}
 }
 
 void TIM5_Init() {
@@ -140,6 +159,29 @@ void TIM5_Init() {
 	}
 }
 
+void TIM7_Init(void) {
+	TIM_MasterConfigTypeDef sMasterConfig = { 0 };
+
+	htim7.Instance = TIM7;
+	htim7.Init.Prescaler = 15999;
+	htim7.Init.CounterMode = TIM_COUNTERMODE_UP;
+	htim7.Init.Period = 99;
+	htim7.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+	if (HAL_TIM_Base_Init(&htim7) != HAL_OK) {
+		// TODO: error handling needed
+	}
+	sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+	sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+	if (HAL_TIMEx_MasterConfigSynchronization(&htim7, &sMasterConfig)
+			!= HAL_OK) {
+		// TODO: error handling needed
+	}
+//	__HAL_TIM_CLEAR_FLAG(&htim7, TIM_FLAG_UPDATE);
+//	__HAL_TIM_ENABLE_IT(&htim7, TIM_IT_UPDATE);
+//	__HAL_TIM_ENABLE(&htim7);
+	HAL_TIM_Base_Start_IT(&htim7);
+}
+
 void TIM1_IRQHandler(void) {
 	// g_encoder1Tick = read_encoder_data JACEK HELP!!!
 }
@@ -149,9 +191,14 @@ void TIM2_IRQHandler(void) {
 }
 
 void TIM3_IRQHandler(void) {
-	 g_encoder3Tick
+//	 g_encoder3Tick
 }
 
+void TIM7_IRQHandler(void) {
+//	__HAL_TIM_CLEAR_FLAG(&htim7, TIM_FLAG_UPDATE);
+	HAL_TIM_IRQHandler(&htim7);
+
+}
 
 /* overwritten weak msp functions (gpio and clock config)*/
 
@@ -241,4 +288,60 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim) {
 		HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 	}
 }
+
+void HAL_TIM_Base_MspInit(TIM_HandleTypeDef *htim_base) {
+	if (htim_base->Instance == TIM7) {
+		/* Peripheral clock enable */
+		__HAL_RCC_TIM7_CLK_ENABLE();
+		/* TIM7 interrupt Init */
+		HAL_NVIC_SetPriority(TIM7_IRQn, 0, 0);
+		HAL_NVIC_EnableIRQ(TIM7_IRQn);
+	}
+
+}
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+	if (htim->Instance == TIM7) {
+		HAL_TIM_Encoder_Stop(&htim1, TIM_CHANNEL_ALL);
+		HAL_TIM_Encoder_Stop(&htim2, TIM_CHANNEL_ALL);
+		HAL_TIM_Encoder_Stop(&htim3, TIM_CHANNEL_ALL );
+
+		enc1PulseNumber = __HAL_TIM_GET_COUNTER(&htim1);
+		enc2PulseNumber = __HAL_TIM_GET_COUNTER(&htim2);
+		enc3PulseNumber = __HAL_TIM_GET_COUNTER(&htim3);
+
+		motor1Velocity = enc1PulseNumber * 1000 / VELOCITY_CLOCK_TIME;
+		motor2Velocity = enc2PulseNumber * 1000 / VELOCITY_CLOCK_TIME;
+		motor3Velocity = enc3PulseNumber * 1000 / VELOCITY_CLOCK_TIME;
+
+		__HAL_TIM_SET_COUNTER(&htim1, 0);
+		__HAL_TIM_SET_COUNTER(&htim2, 0);
+		__HAL_TIM_SET_COUNTER(&htim3, 0);
+
+		HAL_TIM_Encoder_Start(&htim1, TIM_CHANNEL_1 | TIM_CHANNEL_2);
+		HAL_TIM_Encoder_Start(&htim2, TIM_CHANNEL_1 | TIM_CHANNEL_2);
+		HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_1 | TIM_CHANNEL_2);
+//		__HAL_TIM_CLEAR_FLAG(&htim7, TIM_FLAG_UPDATE);
+	}
+
+}
+
+
+HAL_StatusTypeDef PWM_SetDutyCycle(ChannelType channel, uint16_t duty)
+{
+	__HAL_TIM_SET_COMPARE(&htim5, channel, duty);
+	return HAL_OK;
+}
+
+void motor_calibration(ChannelType channel)
+{
+	PWM_SetDutyCycle(channel,1000);
+	HAL_Delay(5000);
+	PWM_SetDutyCycle(channel,500);
+	HAL_Delay(5000);
+	PWM_SetDutyCycle(channel,750);
+	HAL_Delay(5000);
+}
+
+
 

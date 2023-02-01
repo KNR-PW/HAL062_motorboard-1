@@ -8,7 +8,6 @@
 
 #ifndef MOTORS_TIMERS_H_
 #define MOTORS_TIMERS_H_
-#include "stdint.h"
 
 // [Timer - Encoder - Pin] mapping for our custom motor board
 // TIM1_CH1 - ENK1_A - PA8
@@ -38,6 +37,9 @@ void TIM3_Init();
 // @brief Initialize PWM timer
 void TIM5_Init();
 
+// @brief Initialize timer for measuring speed
+void TIM7_Init(void);
+
 // @brief Read encoder1 data
 void TIM1_IRQHandler(void);
 
@@ -47,11 +49,31 @@ void TIM2_IRQHandler(void);
 // @brief Read encoder3 data
 void TIM3_IRQHandler(void);
 
+
+void TIM7_IRQHandler(void);
+
+typedef enum {
+	CHANNEL1 = TIM_CHANNEL_1, // PWM1
+	CHANNEL2 = TIM_CHANNEL_2, // PWM2
+	CHANNEL3 = TIM_CHANNEL_3, // PWM3
+} ChannelType;
+
+// @brief required motor calibration before first usage
+// @param channel enum type number of channel to precise motor
+void motor_calibration(ChannelType channel);
+
+// @brief Setting duty of motors PWM
+// @param channel enum type number of channel to precise motor
+// @param duty duty chosen from 500 to 1000
+// @returns predefined enum status type from HAL library
+HAL_StatusTypeDef PWM_SetDutyCycle(ChannelType channel, uint16_t duty);
+
 // @brief Global variable for data from encoder1
 //volatile int32_t g_encoder1Tick;
 // @brief Global variable for data from encoder2
 //volatile int32_t g_encoder2Tick;
 // @brief Global variable for data from encoder3
 //volatile int32_t g_encoder3Tick;
+
 
 #endif /* MOTORS_TIMERS_H_ */

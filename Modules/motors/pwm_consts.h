@@ -10,7 +10,6 @@
 #define MODULES_MOTORS_PWM_CONSTS_H
 
 #include <stm32f4xx_hal_gpio.h>
-#include <stdint.h>
 
 #define PWM_PORT GPIOA
 #define PWM1_PIN GPIO_PIN_0

@@ -23,8 +23,10 @@
 #define ENCODER3_B_PIN GPIO_PIN_7
 
 /* contains information of numbers of pulse per whole rotation*/
-#define ENC1_PULSCE_PER_ROTATION 29
-#define ENC2_PULSCE_PER_ROTATION 29
-#define ENC3_PULSCE_PER_ROTATION 29
+#define ENC1_MAX_PULSE_VALUE 1000
+#define ENC2_MAX_PULSE_VALUE 1000
+#define ENC3_MAX_PULSE_VALUE 1000
+
+#define VELOCITY_CLOCK_TIME 100 //in ms
 
 #endif /* MODULES_MOTORS_ENCODER_CONSTS_H */
