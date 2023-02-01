@@ -40,16 +40,7 @@ void TIM5_Init();
 // @brief Initialize timer for measuring speed
 void TIM7_Init(void);
 
-// @brief Read encoder1 data
-void TIM1_IRQHandler(void);
-
-// @brief Read encoder2 data
-void TIM2_IRQHandler(void);
-
-// @brief Read encoder3 data
-void TIM3_IRQHandler(void);
-
-
+// @brief Readings encoder data
 void TIM7_IRQHandler(void);
 
 typedef enum {
@@ -67,7 +58,5 @@ void motor_calibration(ChannelType channel);
 // @param duty duty chosen from 500 to 1000
 // @returns predefined enum status type from HAL library
 HAL_StatusTypeDef PWM_SetDutyCycle(ChannelType channel, uint16_t duty);
-
-
 
 #endif /* MOTORS_TIMERS_H_ */
