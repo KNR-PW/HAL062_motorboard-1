@@ -1,7 +1,7 @@
 /*
  ******************************************************************************
  * @file           : timers.c
- * @author         : D. Mucha
+ * @author         : D. Mucha, K. Czechowicz, A. Rybojad
  * @brief          : Timers configuration
  ******************************************************************************
  */
@@ -19,25 +19,20 @@ TIM_HandleTypeDef htim3; // encoder 3 - TIM3
 TIM_HandleTypeDef htim5; // PWM 1,2,3 - TIM5
 TIM_HandleTypeDef htim7; // measuring speed - TIM14
 
+/* number of pulse that encoder count */
 volatile uint16_t enc1PulseNumber;
 volatile uint16_t enc2PulseNumber;
 volatile uint16_t enc3PulseNumber;
 
+/* number of pulse that encoder generates per second */
 volatile int16_t enc1PulsePerSec;
 volatile int16_t enc2PulsePerSec;
 volatile int16_t enc3PulsePerSec;
 
+/* angular value of motors */
 volatile int16_t motor1Velocity;
 volatile int16_t motor2Velocity;
 volatile int16_t motor3Velocity;
-
-volatile int16_t old1Counter;
-volatile int16_t old2Counter;
-volatile int16_t old3Counter;
-
-volatile int16_t counter1Value;
-volatile int16_t counter2Value;
-volatile int16_t counter3Value;
 
 void InitTimers() {
 	TIM1_Init();
@@ -296,41 +291,42 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef *htim_base) {
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	if (htim->Instance == TIM7) {
 
+		enc1PulseNumber = __HAL_TIM_GET_COUNTER(&htim1);
+		enc2PulseNumber = __HAL_TIM_GET_COUNTER(&htim2);
+		enc3PulseNumber = __HAL_TIM_GET_COUNTER(&htim3);
 
+		// checking if direction is negative
+		if (enc1PulseNumber > ENC1_MAX_PULSE_VALUE / 2) {
+			enc1PulseNumber = ENC1_MAX_PULSE_VALUE - enc1PulseNumber;
+			enc1PulseNumber = (int16_t) enc1PulseNumber;
+			enc1PulseNumber = -1 * enc1PulseNumber;
 
-//
-//		enc1PulseNumber = counter1Value - old1Counter;
-//		enc2PulseNumber = counter2Value - old2Counter;
-//		enc3PulseNumber = counter3Value - old3Counter;
+		}
+		if (enc2PulseNumber > ENC2_MAX_PULSE_VALUE / 2) {
+			enc2PulseNumber = ENC2_MAX_PULSE_VALUE - enc2PulseNumber;
+			enc2PulseNumber = (int16_t) enc2PulseNumber;
+			enc2PulseNumber = -1 * enc2PulseNumber;
 
+		}
+		if (enc3PulseNumber > ENC3_MAX_PULSE_VALUE / 2) {
+			enc3PulseNumber = ENC3_MAX_PULSE_VALUE - enc3PulseNumber;
+			enc3PulseNumber = (int16_t) enc3PulseNumber;
+			enc3PulseNumber = -1 * enc3PulseNumber;
 
-		enc1PulseNumber =  __HAL_TIM_GET_COUNTER(&htim1);
-		enc2PulseNumber = 	__HAL_TIM_GET_COUNTER(&htim2);
-		enc3PulseNumber =  __HAL_TIM_GET_COUNTER(&htim3);
-
-		if(enc1PulseNumber > 16000){
-			enc1PulseNumber = 32000-enc1PulseNumber;
-			enc1PulseNumber = (int16_t)enc1PulseNumber;
-			enc1PulseNumber = -1*enc1PulseNumber;
 		}
 
 		enc1PulsePerSec = enc1PulseNumber * 1000 / VELOCITY_CLOCK_TIME;
 		enc2PulsePerSec = enc2PulseNumber * 1000 / VELOCITY_CLOCK_TIME;
 		enc3PulsePerSec = enc3PulseNumber * 1000 / VELOCITY_CLOCK_TIME;
 
-		motor1Velocity = enc1PulsePerSec/ENC1_PULSE_PER_ROTATION;
-		motor2Velocity = enc2PulsePerSec/ENC2_PULSE_PER_ROTATION;
-		motor3Velocity = enc3PulsePerSec/ENC3_PULSE_PER_ROTATION;
-
-//		old1Counter = counter1Value;
-//		old2Counter = counter2Value;
-//		old3Counter = counter3Value;
+		motor1Velocity = enc1PulsePerSec / ENC1_PULSE_PER_ROTATION;
+		motor2Velocity = enc2PulsePerSec / ENC2_PULSE_PER_ROTATION;
+		motor3Velocity = enc3PulsePerSec / ENC3_PULSE_PER_ROTATION;
 
 		__HAL_TIM_SET_COUNTER(&htim1, 0);
 		__HAL_TIM_SET_COUNTER(&htim2, 0);
 		__HAL_TIM_SET_COUNTER(&htim3, 0);
 	}
-
 }
 
 HAL_StatusTypeDef PWM_SetDutyCycle(ChannelType channel, uint16_t duty) {

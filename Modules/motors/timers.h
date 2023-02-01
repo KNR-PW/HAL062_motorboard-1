@@ -68,12 +68,6 @@ void motor_calibration(ChannelType channel);
 // @returns predefined enum status type from HAL library
 HAL_StatusTypeDef PWM_SetDutyCycle(ChannelType channel, uint16_t duty);
 
-// @brief Global variable for data from encoder1
-//volatile int32_t g_encoder1Tick;
-// @brief Global variable for data from encoder2
-//volatile int32_t g_encoder2Tick;
-// @brief Global variable for data from encoder3
-//volatile int32_t g_encoder3Tick;
 
 
 #endif /* MOTORS_TIMERS_H_ */

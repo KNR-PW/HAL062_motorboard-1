@@ -28,9 +28,9 @@
 #define ENC3_MAX_PULSE_VALUE 32000
 
 /* contains information of numbers of pulse per whole rotation*/
-#define ENC1_PULSE_PER_ROTATION 64
-#define ENC2_PULSE_PER_ROTATION 64
-#define ENC3_PULSE_PER_ROTATION 64
+#define ENC1_PULSE_PER_ROTATION 32
+#define ENC2_PULSE_PER_ROTATION 32
+#define ENC3_PULSE_PER_ROTATION 32
 
 #define VELOCITY_CLOCK_TIME 100 //in ms
 
