@@ -23,9 +23,7 @@
 #define ENCODER3_B_PIN GPIO_PIN_7
 
 /* contains information of max pulse count*/
-#define ENC1_MAX_PULSE_VALUE 32000
-#define ENC2_MAX_PULSE_VALUE 32000
-#define ENC3_MAX_PULSE_VALUE 32000
+#define ENC_MAX_PULSE_VALUE 32000
 
 /* contains information of numbers of pulse per whole rotation*/
 #define ENC1_PULSE_PER_ROTATION 32

@@ -12,12 +12,23 @@
 #include "pwm_consts.h"
 #include "encoder_consts.h"
 #include "tim_handlers.h"
+#include "encoder.h"
 
 TIM_HandleTypeDef htim1; //encoder 1 - TIM1
 TIM_HandleTypeDef htim2; // encoder 2 - TIM2
 TIM_HandleTypeDef htim3; // encoder 3 - TIM3
 TIM_HandleTypeDef htim5; // PWM 1,2,3 - TIM5
 TIM_HandleTypeDef htim7; // measuring speed - TIM14
+
+/* number of pulse that encoder count */
+volatile uint16_t position1;
+volatile uint16_t position2;
+volatile uint16_t position3;
+
+/* angular value of motors */
+volatile int16_t motor1Velocity;
+volatile int16_t motor2Velocity;
+volatile int16_t motor3Velocity;
 
 
 void InitTimers() {
@@ -36,7 +47,7 @@ void TIM1_Init() {
 	htim1.Instance = TIM1;
 	htim1.Init.Prescaler = 0;
 	htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim1.Init.Period = ENC3_MAX_PULSE_VALUE;
+	htim1.Init.Period = ENC_MAX_PULSE_VALUE;
 	htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
 	htim1.Init.RepetitionCounter = 0;
 	htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
@@ -72,7 +83,7 @@ void TIM2_Init() {
 	htim2.Instance = TIM2;
 	htim2.Init.Prescaler = 0;
 	htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim2.Init.Period = ENC2_MAX_PULSE_VALUE;
+	htim2.Init.Period = ENC_MAX_PULSE_VALUE;
 	htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
 	htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
 	sConfig.EncoderMode = TIM_ENCODERMODE_TI1;
@@ -105,7 +116,7 @@ void TIM3_Init() {
 	htim3.Instance = TIM3;
 	htim3.Init.Prescaler = 0;
 	htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim3.Init.Period = ENC3_MAX_PULSE_VALUE;
+	htim3.Init.Period = ENC_MAX_PULSE_VALUE;
 	htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
 	htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
 	sConfig.EncoderMode = TIM_ENCODERMODE_TI1;
@@ -266,6 +277,23 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef *htim_base) {
 		HAL_NVIC_EnableIRQ(TIM7_IRQn);
 	}
 
+}
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+	if (htim->Instance == TIM7){
+		g_encoder1Tick = htim1.Instance->CNT;
+		g_encoder2Tick = htim2.Instance->CNT;
+		g_encoder3Tick = htim3.Instance->CNT;
+
+//		motor1Velocity = get_motor_velocity(position1, ENC1_PULSE_PER_ROTATION);
+//		motor2Velocity = get_motor_velocity(position2, ENC2_PULSE_PER_ROTATION);
+//		motor3Velocity = get_motor_velocity(position3, ENC3_PULSE_PER_ROTATION);
+	}
+
+	// resetting counter for next interrupt
+	__HAL_TIM_SET_COUNTER(&htim1, 0);
+	__HAL_TIM_SET_COUNTER(&htim2, 0);
+	__HAL_TIM_SET_COUNTER(&htim3, 0);
 }
 
 

@@ -46,4 +46,6 @@ void TIM5_Init();
 // @brief Initialize timer for measuring speed
 void TIM7_Init(void);
 
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
+
 #endif /* MOTORS_TIMERS_H_ */

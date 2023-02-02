@@ -12,19 +12,6 @@
 // @brief Readings encoder data
 void TIM7_IRQHandler(void);
 
-/* number of pulse that encoder count */
-volatile uint16_t enc1PulseNumber;
-volatile uint16_t enc2PulseNumber;
-volatile uint16_t enc3PulseNumber;
-
-/* number of pulse that encoder generates per second */
-volatile int16_t enc1PulsePerSec;
-volatile int16_t enc2PulsePerSec;
-volatile int16_t enc3PulsePerSec;
-
-/* angular value of motors */
-extern volatile int16_t motor1Velocity;
-extern volatile int16_t motor2Velocity;
-extern volatile int16_t motor3Velocity;
+int16_t get_motor_velocity(uint16_t position, uint16_t PULSE_PER_ROTATION);
 
 #endif //MOTORS_ENCODER_H_

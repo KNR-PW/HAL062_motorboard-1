@@ -9,6 +9,8 @@
 #include "motor_controller.h"
 #include "control_consts.h"
 
+/* Proponujemy zrobic funkcje updatespeed ktora bedzie */
+
 int16_t PIDSpeedController(float referenceSpeed, float actualSpeed,
 		float currentRegOut) {
 	float integrator_speed = 0;
