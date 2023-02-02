@@ -10,6 +10,7 @@
 #define MODULES_MOTORS_MOTOR_INTERFACE_H
 
 #include <stdbool.h>
+#include <stdint.h>
 
 // @brief LEDs ID structure
 // names corresponds to following designations of rover's wheels:
@@ -31,19 +32,6 @@ struct singleMotorParam {
 	int speed;
 };
 
-// variable stores speed of motor1 form previous step
-float previousSpeedMotor1 = 0;
-// variable stores speed of motor2 form previous step
-float previousSpeedMotor2 = 0;
-// variable stores speed of motor3 form previous step
-float previousSpeedMotor3 = 0;
-
-// variable stores output of PID controller for motor1
-float PIDOutMotor1 = 0;
-// variable stores output of PID controller for motor2
-float PIDOutMotor2 = 0;
-// variable stores output of PID controller for motor3
-float PIDOutMotor3 = 0;
 
 // @brief High-level function that should be placed in a continuous loop to control the speed of motors
 // @param params array of singleMotorParam structures for 3 motors from one side of the rover

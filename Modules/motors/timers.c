@@ -12,7 +12,8 @@
 #include "pwm_consts.h"
 #include "encoder_consts.h"
 #include "tim_handlers.h"
-#include "encoder.h"
+#include "motor_controller.h"
+#include <stdint.h>
 
 TIM_HandleTypeDef htim1; //encoder 1 - TIM1
 TIM_HandleTypeDef htim2; // encoder 2 - TIM2
@@ -21,14 +22,16 @@ TIM_HandleTypeDef htim5; // PWM 1,2,3 - TIM5
 TIM_HandleTypeDef htim7; // measuring speed - TIM14
 
 /* number of pulse that encoder count */
-volatile uint16_t position1;
-volatile uint16_t position2;
-volatile uint16_t position3;
+int32_t g_encoder1Tick;
+int32_t g_encoder2Tick;
+int32_t g_encoder3Tick;
 
 /* angular value of motors */
 volatile int16_t motor1Velocity;
 volatile int16_t motor2Velocity;
 volatile int16_t motor3Velocity;
+
+
 
 
 void InitTimers() {
@@ -279,21 +282,21 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef *htim_base) {
 
 }
 
+void TIM7_IRQHandler(void) {
+	HAL_TIM_IRQHandler(&htim7);
+}
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	if (htim->Instance == TIM7){
 		g_encoder1Tick = htim1.Instance->CNT;
 		g_encoder2Tick = htim2.Instance->CNT;
 		g_encoder3Tick = htim3.Instance->CNT;
 
-//		motor1Velocity = get_motor_velocity(position1, ENC1_PULSE_PER_ROTATION);
-//		motor2Velocity = get_motor_velocity(position2, ENC2_PULSE_PER_ROTATION);
-//		motor3Velocity = get_motor_velocity(position3, ENC3_PULSE_PER_ROTATION);
+		// resetting counter for next interrupt
+		__HAL_TIM_SET_COUNTER(&htim1, 0);
+		__HAL_TIM_SET_COUNTER(&htim2, 0);
+		__HAL_TIM_SET_COUNTER(&htim3, 0);
 	}
-
-	// resetting counter for next interrupt
-	__HAL_TIM_SET_COUNTER(&htim1, 0);
-	__HAL_TIM_SET_COUNTER(&htim2, 0);
-	__HAL_TIM_SET_COUNTER(&htim3, 0);
 }
 
 

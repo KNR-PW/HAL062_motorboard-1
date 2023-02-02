@@ -8,6 +8,7 @@
 
 #include "motor_interface.h"
 #include "motor_controller.h"
+#include "timers.h"
 #include <stddef.h>
 #include <stdint.h>
 
@@ -17,9 +18,20 @@ struct Map {
 	void *ptr;
 };
 
-extern int32_t g_encoder1Tick;
-extern int32_t g_encoder2Tick;
-extern int32_t g_encoder3Tick;
+
+// variable stores speed of motor1 form previous step
+float previousSpeedMotor1 = 0;
+// variable stores speed of motor2 form previous step
+float previousSpeedMotor2 = 0;
+// variable stores speed of motor3 form previous step
+float previousSpeedMotor3 = 0;
+
+// variable stores output of PID controller for motor1
+float PIDOutMotor1 = 0;
+// variable stores output of PID controller for motor2
+float PIDOutMotor2 = 0;
+// variable stores output of PID controller for motor3
+float PIDOutMotor3 = 0;
 
 struct Map speed_map[3] = { { .key = 0, .ptr = &previousSpeedMotor1 }, { .key =
 		1, .ptr = &previousSpeedMotor2 }, { .key = 2, .ptr =

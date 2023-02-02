@@ -9,6 +9,8 @@
 #ifndef MOTORS_TIMERS_H_
 #define MOTORS_TIMERS_H_
 
+#include <stm32f4xx_hal.h>
+
 // [Timer - Encoder - Pin] mapping for our custom motor board
 // TIM1_CH1 - ENK1_A - PA8
 // TIM1_CH2 - ENK1_B - PA9
@@ -21,6 +23,11 @@
 // TIM5_CH1 - PWM1 - PA0
 // TIM5_CH2 - PWM2 - PA1
 // TIM5_CH3 - PWM3 - PA2
+
+extern int32_t g_encoder1Tick;
+extern int32_t g_encoder2Tick;
+extern int32_t g_encoder3Tick;
+
 
 extern TIM_HandleTypeDef htim1; //encoder 1 - TIM1
 extern TIM_HandleTypeDef htim2; // encoder 2 - TIM2
