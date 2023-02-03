@@ -43,7 +43,7 @@ void MX_CAN1_Init(void) {
 	CAN_FilterTypeDef sFilterConfig;
 
 	hcan1.Instance = CAN1;
-	hcan1.Init.Prescaler = 50;
+	hcan1.Init.Prescaler = 40;
 	hcan1.Init.Mode = CAN_MODE_NORMAL;
 	hcan1.Init.SyncJumpWidth = CAN_SJW_1TQ;
 	hcan1.Init.TimeSeg1 = CAN_BS1_9TQ;
@@ -306,6 +306,48 @@ void HAL_CAN_MspDeInit(CAN_HandleTypeDef *canHandle) {
 
 		/* USER CODE END CAN2_MspDeInit 1 */
 	}
+}
+
+/**
+* @brief This function handles CAN1 TX interrupt.
+*/
+void CAN1_TX_IRQHandler(void)
+{
+  /* USER CODE BEGIN CAN1_TX_IRQn 0 */
+
+  /* USER CODE END CAN1_TX_IRQn 0 */
+  HAL_CAN_IRQHandler(&hcan1);
+  /* USER CODE BEGIN CAN1_TX_IRQn 1 */
+
+  /* USER CODE END CAN1_TX_IRQn 1 */
+}
+
+/**
+* @brief This function handles CAN1 RX0 interrupt.
+*/
+void CAN1_RX0_IRQHandler(void)
+{
+  /* USER CODE BEGIN CAN1_RX0_IRQn 0 */
+
+  /* USER CODE END CAN1_RX0_IRQn 0 */
+  HAL_CAN_IRQHandler(&hcan1);
+  /* USER CODE BEGIN CAN1_RX0_IRQn 1 */
+
+  /* USER CODE END CAN1_RX0_IRQn 1 */
+}
+
+/**
+* @brief This function handles CAN1 RX1 interrupt.
+*/
+void CAN1_RX1_IRQHandler(void)
+{
+  /* USER CODE BEGIN CAN1_RX1_IRQn 0 */
+
+  /* USER CODE END CAN1_RX1_IRQn 0 */
+  HAL_CAN_IRQHandler(&hcan1);
+  /* USER CODE BEGIN CAN1_RX1_IRQn 1 */
+
+  /* USER CODE END CAN1_RX1_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */
