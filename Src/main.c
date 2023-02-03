@@ -1,7 +1,7 @@
 /**
  ******************************************************************************
  * @file           : main.c
- * @author         : TODO: Add credits
+ * @author         : J. Prokopczuk
  * @brief          : Main program body
  ******************************************************************************
  */
@@ -17,10 +17,6 @@ void SystemClock_Config(void);
 void Error_Handler(void);
 
 
-void SystemClock_Config(void);
-void Error_Handler(void);
-
-// static UART_HandleTypeDef huart3;
 void SysTick_Handler(void)
 {
 	HAL_IncTick();
@@ -28,9 +24,7 @@ void SysTick_Handler(void)
 
 int main(void)
 {
-	__HAL_RCC_GPIOH_CLK_ENABLE(); // clock
-	// __HAL_RCC_SYSCFG_CLK_ENABLE();
-	// __HAL_RCC_PWR_CLK_ENABLE();
+	__HAL_RCC_GPIOH_CLK_ENABLE();
 	HAL_Init();
 	SystemClock_Config();
 	MX_CAN1_Init();
@@ -55,48 +49,6 @@ int main(void)
 }
 
 TIM_HandleTypeDef htim4;
-
-/**
-* @brief This function handles CAN1 TX interrupt.
-*/
-void CAN1_TX_IRQHandler(void)
-{
-  /* USER CODE BEGIN CAN1_TX_IRQn 0 */
-
-  /* USER CODE END CAN1_TX_IRQn 0 */
-  HAL_CAN_IRQHandler(&hcan1);
-  /* USER CODE BEGIN CAN1_TX_IRQn 1 */
-
-  /* USER CODE END CAN1_TX_IRQn 1 */
-}
-
-/**
-* @brief This function handles CAN1 RX0 interrupt.
-*/
-void CAN1_RX0_IRQHandler(void)
-{
-  /* USER CODE BEGIN CAN1_RX0_IRQn 0 */
-
-  /* USER CODE END CAN1_RX0_IRQn 0 */
-  HAL_CAN_IRQHandler(&hcan1);
-  /* USER CODE BEGIN CAN1_RX0_IRQn 1 */
-
-  /* USER CODE END CAN1_RX0_IRQn 1 */
-}
-
-/**
-* @brief This function handles CAN1 RX1 interrupt.
-*/
-void CAN1_RX1_IRQHandler(void)
-{
-  /* USER CODE BEGIN CAN1_RX1_IRQn 0 */
-
-  /* USER CODE END CAN1_RX1_IRQn 0 */
-  HAL_CAN_IRQHandler(&hcan1);
-  /* USER CODE BEGIN CAN1_RX1_IRQn 1 */
-
-  /* USER CODE END CAN1_RX1_IRQn 1 */
-}
 
 /**
 * @brief This function handles TIM4 global interrupt.
