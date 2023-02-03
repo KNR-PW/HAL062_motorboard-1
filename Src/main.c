@@ -39,6 +39,10 @@ int main(void)
 		HAL_Delay(1000);
 		Leds_toggleLed(LED2);
 		HAL_Delay(1000);
+		Leds_toggleLed(LED3);
+		HAL_Delay(1000);
+		Leds_toggleLed(LED4);
+		HAL_Delay(1000);
 	}
 }
 

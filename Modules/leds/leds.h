@@ -6,11 +6,11 @@
 #ifndef MODULES_LEDS_LEDS_H
 #define MODULES_LEDS_LEDS_H
 
-#define LED_1		GPIO_PIN_7
-#define LED_2		GPIO_PIN_8
-#define LED_3		GPIO_PIN_9
-#define LED_4		GPIO_PIN_10
-#define LEDS_PORT 	GPIOB
+#define LED_1		GPIO_PIN_0
+#define LED_2		GPIO_PIN_1
+#define LED_3		GPIO_PIN_2
+#define LED_4		GPIO_PIN_3
+#define LEDS_PORT 	GPIOC
 
 // @brief LEDs ID structure
 typedef enum{
