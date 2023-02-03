@@ -15,27 +15,28 @@
 void Leds_init(void)
 {
 	GPIO_InitTypeDef gpio;
-	__HAL_RCC_GPIOB_CLK_ENABLE();
-	gpio.Pin = GPIO_PIN_7 | GPIO_PIN_8 | GPIO_PIN_9 | GPIO_PIN_10;
+	/// TODO: Change this clk init!
+	__HAL_RCC_GPIOC_CLK_ENABLE();
+	gpio.Pin = LED_1 | LED_2 | LED_3 | LED_4;
 	gpio.Mode = GPIO_MODE_OUTPUT_PP;
 	gpio.Pull = GPIO_PULLDOWN;
 	gpio.Speed = GPIO_SPEED_FREQ_LOW;
-	HAL_GPIO_Init(GPIOB, &gpio);
+	HAL_GPIO_Init(LEDS_PORT, &gpio);
 }
 
 void Leds_turnOnLed(Leds_ID ledId){
 	switch(ledId){
 	case LED1:
-		HAL_GPIO_WritePin(GPIOB, LED_1, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(LEDS_PORT, LED_1, GPIO_PIN_SET);
 		break;
 	case LED2:
-		HAL_GPIO_WritePin(GPIOB, LED_2, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(LEDS_PORT, LED_2, GPIO_PIN_SET);
 		break;
 	case LED3:
-		HAL_GPIO_WritePin(GPIOB, LED_3, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(LEDS_PORT, LED_3, GPIO_PIN_SET);
 		break;
 	case LED4:
-		HAL_GPIO_WritePin(GPIOB, LED_4, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(LEDS_PORT, LED_4, GPIO_PIN_SET);
 		break;
 	}
 }
